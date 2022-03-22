@@ -1,0 +1,116 @@
+p {
+  font-family: "Trajan";
+}
+table.mat-table{
+  table-layout: fixed;
+width: 100%;
+display: table;
+}
+table {
+width: 100%;
+font-family: "Trajan";
+}
+
+.mat-header-row{
+  height: auto;
+}
+.mat-row:nth-child(even) {
+  background-color:white;
+}
+.mat-row:nth-child(odd) {
+  background-color: #f7f7f7;
+}
+.mat-header-cell {
+font-size: medium;
+  color: white;
+  background-color: #2A5C9E;
+  padding: 10px 10px 10px 10px;
+  justify-content: center;
+}
+.mat-row {
+  height: auto;
+
+}
+.mat-cell {
+  font-size: medium;
+  padding: 5px 5px 5px 5px;
+  justify-content: center;
+}
+
+* {
+border-radius: 0 !important;
+}
+
+* {
+-webkit-border-radius: 0 !important;
+   -moz-border-radius: 0 !important;
+        border-radius: 0 !important;
+}
+.div.border{
+border-style: solid;
+}
+
+   .button-edit{
+    background-color: #8cb7ec;
+  }
+
+  .button-acceso{
+      background-color: #969696;
+  }
+
+  .button-delete{
+      background-color: #f80000;
+  }
+
+
+  .button-file{
+      background-color: #47a044;
+  }
+
+  .div.letter {
+  font-size: 50px;
+  }
+  .modal-body{
+    max-height: 400px;
+    overflow-y:auto;
+  }
+  .modal {
+  overflow-y:auto;
+  }
+  div.scroll {
+    overflow-x: auto;
+    overflow-y: hidden;
+    white-space: nowrap;
+  }
+  .demo-table {
+    width: 100%;
+  }
+
+  .demo-button-container {
+    padding-bottom: 16px;
+  }
+
+  .demo-button + .demo-button {
+    margin-left: 8px;
+  }
+  .mat-column-Hefe,.mat-column-He25,.mat-column-He35,
+  .mat-column-H100,.mat-column-Hen25,.mat-column-Hen35,
+  .mat-column-Hn100,.mat-column-Bnoc,.mat-column-Lote,
+  .mat-column-falt,.mat-column-vaca,.mat-column-desm,
+  .mat-column-sube,.mat-column-subm,.mat-column-lics,
+  .mat-column-susp,.mat-column-licp,.mat-column-licf,
+  .mat-column-pgoc,.mat-column-psgo{
+    min-width: 60px;
+    max-width: 80px;
+  }
+  .mat-column-empresa,.mat-column-personal{
+    min-width: 150px;
+    max-width: 160px;
+  }
+  .table.mat-column-Opciones{
+    min-width: 180px;
+    max-width: 190px;
+  }
+  .cdk-global-overlay-wrapper, .cdk-overlay-container {
+    z-index: 99999 !important;
+ }

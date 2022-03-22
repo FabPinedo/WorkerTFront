@@ -1,0 +1,155 @@
+<div class="row">
+
+  <div class="col-12">
+      <div class="card divmargen">
+          <div class="card-header">
+              <h3 class="card-title">
+                  <i class="far fa-list-alt"></i>
+                  &nbsp;
+                  Usuarios
+                  &nbsp;
+                  <!--<button type="button" class="btn btn-secondary btn-sm " (click)="onResetFormPerfil()"
+                      data-toggle="modal" data-target="#viewModalUser">
+                      <i class="far fa-plus-square"></i>
+                      Crear
+                  </button>-->
+              </h3>
+              <div class="example-container" style="float:right;">
+                <form [formGroup]="options" [style.fontSize.px]="12">
+                <mat-form-field appearance="fill"
+                    [hideRequiredMarker]="hideRequiredControl.value"
+                    [floatLabel]="floatLabelControl.value">
+                  <mat-select formControlName="criterioBusqueda" required>
+                    <mat-option>-- None --</mat-option>
+                    <mat-option value="codusuario">Código</mat-option>
+                    <mat-option value="nombre">Nombre</mat-option>
+                  </mat-select>
+                  <mat-label> <b> Criterio de busqueda</b></mat-label>
+                </mat-form-field>
+                <mat-form-field appearance="fill" [floatLabel]="floatLabelControl.value">
+                  <mat-label>Buscar por ...</mat-label>
+                  <input matInput formControlName="infoBuscar" placeholder="Nombre o Ruc">
+                </mat-form-field>
+                  <button mat-raised-button color="primary" [disabled]="!options.valid" (click)="Buscar()">
+                    <mat-icon>search</mat-icon>
+                    Buscar
+                  </button>
+
+
+              </form>
+              </div>
+
+          </div>
+          <!-- /.card-header -->
+          <div class="card-body">
+
+              <div class="table-responsive">
+
+                  <table mat-table [dataSource]="usuariodata" class="mat-elevation-z8">
+
+                      <ng-container matColumnDef="Opciones">
+                          <th mat-header-cell *matHeaderCellDef> Opciones </th>
+                          <td mat-cell *matCellDef="let user">
+                              <button [disabled]="isDisable" type="button" name="editar" (click)="onUpdateUser(user)"
+                                  title="Editar contrato"  data-toggle="modal" data-target="#viewModalUser"
+                                  class="btn button-edit btn-sm">
+                                  <i class="far fa-edit"></i>
+                              </button>
+                              &nbsp;
+
+
+                            </td>
+                      </ng-container>
+                      <ng-container matColumnDef="codusuario">
+                        <th mat-header-cell *matHeaderCellDef> Código de usuario</th>
+                        <td mat-cell *matCellDef="let user"> <p class="tabla">{{user.usuario}}</p> </td>
+                    </ng-container>
+
+
+                      <ng-container matColumnDef="nombre">
+                        <th mat-header-cell *matHeaderCellDef>Nombre del usuario</th>
+                        <td mat-cell *matCellDef="let user"><p class="tabla">{{user.nombre }}</p> </td>
+                      </ng-container>
+
+                      <tr mat-header-row *matHeaderRowDef="usuariocol"></tr>
+                      <tr mat-row *matRowDef="let row; columns: usuariocol;"></tr>
+                    </table>
+              </div>
+              <div style="display: flex; background-color: #fff; margin-top: 2%;" >
+                    <span  style="float: right;margin-left: 2%;" >Total de registros: {{nroTotal}}</span>
+                  </div>
+                  <mat-paginator [pageSizeOptions]="[6, 10]" showFirstLastButtons></mat-paginator>
+
+
+          </div>
+          <!-- /.card-body -->
+      </div>
+
+  </div>
+  <!-- /.col -->
+</div>
+
+
+<div class="modal fade" id="viewModalUser" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle"
+    aria-hidden="true">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+            <form [formGroup]="formUser" (ngSubmit)="onSubmit()" class="form-horizontal">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLongTitle">Usuario</h5>
+                    <button type="button" #closebutton class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div class="container-fluid">
+                        <div class="row">
+                            <div class="col-md-12">
+                          <div class="form-group row">
+                              <label for="inputNombreUser"
+                                  class="col-sm-2 col-form-label">Nombre de usuario</label>
+                              <div class="col-sm-6">
+                                  <input  type="text" class="form-control" formControlName="nombre"
+                                      placeholder="Nombre del usuario"
+                                      [ngClass]="{'is-invalid': submitted && formUser.hasError('required', 'nombre') }" [readonly]="true">
+                                  <div *ngIf="submitted &&formUser.hasError('errors', 'nombre')" class="invalid-feedback">
+                                      <div *ngIf="formUser.hasError('required', 'nombre')">First Name is required</div>
+                                  </div>
+                              </div>
+                        </div>
+                            <div class="form-group row">
+                              <label for="id" class="col-form-label col-sm-2">Código de Usuario</label>
+                              <div class="col-sm-6">
+                                <input type="text" class="form-control" formControlName="usuario"
+                                placeholder="Codigo de usuario"
+                                [ngClass]="{'is-invalid': submitted && formUser.hasError('required', 'usuario') }" [readonly]="true">
+                                <div *ngIf="submitted && formUser.hasError('errors', 'usuario')" class="invalid-feedback">
+                                <div *ngIf="formUser.hasError('required', 'usuario')">Este campo es obligatorio</div>
+                                </div>
+                              </div>
+                            </div>
+                            <div class="form-group row">
+                              <label for="id" class="col-form-label col-sm-2">Contraseña</label>
+                              <div class="col-sm-6">
+                                <input type="text" class="form-control" formControlName="password"
+                                placeholder="Contraseña"
+                                [ngClass]="{'is-invalid': submitted && formUser.hasError('required', 'password') }">
+                                <div *ngIf="submitted && formUser.hasError('errors', 'password')" class="invalid-feedback">
+                                <div *ngIf="formUser.hasError('required', 'password')">Este campo es obligatorio</div>
+                                </div>
+                              </div>
+                            </div>
+                        </div>
+
+                    </div>
+
+                </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-danger" data-dismiss="modal">Cerrar</button>
+                    <button type="submit" class="btn btn-info" #closeBtn>Guardar</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

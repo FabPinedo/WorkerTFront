@@ -1,0 +1,324 @@
+<div class="row">
+
+  <div class="col-12">
+      <div class="card divmargen">
+          <div class="card-header">
+
+              <div class="container-fluid">
+                <div class="row" >
+                  <form [formGroup]="formFiltros"  class="form-horizontal" style="width: 100% !important;">
+                    <div class="form-group row" style="font-size: 12px;">
+                      <label for="inputEmpresaNombreComercial"
+                          class="col-form-label col-sm-1 form-control-sm">Empresa</label>
+                          <div class="col-sm-3">
+                            <mat-form-field appearance="fill">
+                              <mat-select  formControlName="empresa"
+                              (selectionChange)="onListAnios();"
+                              [ngClass]="{'is-invalid': submitted && formFiltros.hasError('required', 'empresa') }" >
+                              <mat-option>Seleccione una opcion</mat-option>
+                                <mat-option *ngFor = "let empresa of empresas" [value]="empresa.codempresa">
+                                  {{empresa.desrazonsocial}}
+                                </mat-option>
+                              </mat-select>
+                            </mat-form-field>
+                            <div *ngIf="submitted && formFiltros.hasError('errors', 'empresa')" class="invalid-feedback" >
+                              <div *ngIf="formFiltros.hasError('required', 'empresa')">
+                                Este campo es obligatorio
+                              </div>
+                            </div>
+                            </div>
+                            <label for="inputEmpresaNombreComercial"
+                                class="col-form-label col-sm-1 form-control-sm">Año</label>
+                                <div class="col-sm-3" >
+                                  <mat-form-field appearance="fill">
+                                    <mat-select  formControlName="anio"
+                                    [ngClass]="{'is-invalid': submitted && formFiltros.hasError('required', 'anio') }" >
+                                    <mat-option>Seleccione una opcion</mat-option>
+                                      <mat-option  *ngFor = "let anio of anios" [value]="anio.anio">
+                                        {{anio.anio}}
+                                      </mat-option>
+                                    </mat-select>
+                                  </mat-form-field>
+                                  <div *ngIf="submitted &&formFiltros.hasError('error', 'anio')" class="invalid-feedback" >
+                                <div *ngIf="formFiltros.hasError('required', 'anio')">
+                                  Este campo es obligatorio
+                                </div>
+                              </div>
+                                  </div>
+                                  <label for="inputEmpresaNombreComercial"
+                                  class="col-form-label col-sm-1 form-control-sm">Mes</label>
+                                  <div class="col-sm-3" >
+                                    <mat-form-field appearance="fill">
+                                      <mat-select  formControlName="mes"
+                                      [ngClass]="{'is-invalid': submitted && formFiltros.hasError('required', 'mes') }" >
+                                      <mat-option>Seleccione una opcion</mat-option>
+                                        <mat-option  *ngFor = "let mesvalor of meses" [value]="mesvalor.value">
+                                         {{mesvalor.mes}}
+                                        </mat-option>
+                                      </mat-select>
+                                    </mat-form-field>
+                                    <div *ngIf="submitted && formFiltros.hasError('errors', 'mes')" class="invalid-feedback" >
+                                      <div *ngIf="formFiltros.hasError('required', 'mes')">
+                                        Este campo es obligatorio
+                                      </div>
+                                    </div>
+                                  </div>
+
+
+
+                    </div>
+                        <div class="form-group row justify-content-center" style="font-size: 12px;">
+                          <div class="col-sm-2">
+                            <button  type="submit" class="btn btn-info active form-control-sm" (click)="buscarregistros()">Buscar registros</button>
+                          </div>
+
+
+                        </div>
+
+
+
+
+                  </form>
+            </div>
+
+
+        </div>
+          </div>
+          <!-- /.card-header -->
+          <div class="card-body">
+
+            <div class="table-responsive" id="tablaPrincipal">
+
+              <table mat-table  [dataSource]="aprobacionesdata" class="mat-elevation-z8">
+
+                  <ng-container  matColumnDef="Opciones" style="min-width: fit-content;">
+
+                      <th mat-header-cell *matHeaderCellDef> Opciones </th>
+                      <td  mat-cell *matCellDef="let aprobacion">
+                         <div class="scroll">
+                            <button [disabled]="isDisable" type="button" name="Aprobar" (click)="AprobarTareo(aprobacion)"
+                              title="Aprobar Tareo"
+                              class="btn btn-success btn-sm">
+                              <i class="far fa-edit"></i>
+                          </button>
+                          &nbsp;
+                          <button type="button" name="file"  style="color: #fff;"(click)="Verificarregistros(aprobacion)" title="Verificar tareo"
+                                class="btn btn-warning btn-sm" data-toggle="modal" data-target="#viewModalRegistros">
+                                <i class="fas fa-file-alt"></i>
+                              </button>
+                              &nbsp;
+                          <button [disabled]="isDisable" type="button" name="delete" title="Desaprobar Tareo"
+                              (click)="DesaprobarTareo(aprobacion)" class="btn btn-danger btn-sm">
+                              <i class="fas fa-trash"></i>
+                          </button>
+                         </div>
+                      </td>
+
+                  </ng-container>
+                  <ng-container matColumnDef="dessede">
+                    <th mat-header-cell *matHeaderCellDef> Sede </th>
+                    <td mat-cell *matCellDef="let aprobacion"><p class="tabla">{{aprobacion.dessede}}</p>  </td>
+                  </ng-container>
+                  <ng-container matColumnDef="estado">
+                    <th mat-header-cell *matHeaderCellDef> Estado </th>
+                    <td mat-cell *matCellDef="let aprobacion">
+                      <div *ngIf="aprobacion.indaprueba=='N'">
+                        <p class="tabla">Desaprobado</p>
+                      </div>
+                      <div *ngIf="aprobacion.indaprueba=='S'">
+                        <p class="tabla">Aprobado</p>
+                      </div>
+
+                     </td>
+                  </ng-container>
+                  <ng-container matColumnDef="usuario">
+                    <th mat-header-cell *matHeaderCellDef> Usuario registrador</th>
+                    <td mat-cell *matCellDef="let aprobacion"><p class="tabla">{{aprobacion.codusuarioaprueba}}</p>  </td>
+                  </ng-container>
+                  <ng-container matColumnDef="fecaprobado">
+                    <th mat-header-cell *matHeaderCellDef> Fecha de registro</th>
+                    <td mat-cell *matCellDef="let aprobacion"><p class="tabla">{{aprobacion.fechaaprueba|date:'dd/MM/yyyy'}}</p>  </td>
+                  </ng-container>
+
+
+                  <tr mat-header-row *matHeaderRowDef="aprobacionescol"></tr>
+                  <tr mat-row *matRowDef="let row; columns: aprobacionescol;"></tr>
+              </table>
+          </div>
+          <div style="display: flex; background-color: #fff; margin-top: 2%;" >
+                <span  style="float: right;margin-left: 2%;" >Total de registros: {{nroTotal}}</span>
+              </div>
+              <mat-paginator [pageSizeOptions]="[6, 15]" showFirstLastButtons></mat-paginator>
+
+
+          </div>
+          <!-- /.card-body -->
+      </div>
+
+  </div>
+  <!-- /.col -->
+</div>
+
+<div class="modal fade" id="viewModalRegistros" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle"
+  aria-hidden="true">
+  <div class="modal-dialog modal-lg" role="document">
+      <div class="modal-content">
+          <!--<form [formGroup]="registerForm" (ngSubmit)="onSubmit()" class="form-horizontal">-->
+          <div class="modal-header">
+              <h3 class="modal-title" id="exampleModalLongTitle">Detalle de tareo</h3>
+              <button type="button" #closebutton class="close" data-dismiss="modal" aria-label="Close">
+                  <span aria-hidden="true">&times;</span>
+              </button>
+          </div>
+          <div class="modal-body">
+
+              <div class="container-fluid">
+
+                  <div class="row">
+
+                      <div class="table-responsive">
+
+
+                          <mat-table  [dataSource]="registrosdata" class="mat-elevation-z8">
+
+
+                              <ng-container matColumnDef="empresa">
+                                  <mat-header-cell *matHeaderCellDef> Empresa </mat-header-cell>
+                                  <mat-cell *matCellDef="let registro"> {{registro.codempresa}} </mat-cell>
+                              </ng-container>
+
+                              <ng-container matColumnDef="personal">
+                                  <th mat-header-cell *matHeaderCellDef> Cód. personal </th>
+                                  <td mat-cell *matCellDef="let registro"> {{registro.codpersonal}} </td>
+                              </ng-container>
+                              <ng-container matColumnDef="nombre">
+                                <th mat-header-cell *matHeaderCellDef> Nombre </th>
+                                <td mat-cell *matCellDef="let registro"> {{registro.nombre}} </td>
+                            </ng-container>
+
+                              <ng-container matColumnDef="hefe">
+                                <th mat-header-cell *matHeaderCellDef> Hefe </th>
+                                <td mat-cell *matCellDef="let registro"> {{registro.hefe}} </td>
+                            </ng-container>
+
+                            <ng-container matColumnDef="bnoc">
+                                <th mat-header-cell *matHeaderCellDef> Bnoc </th>
+                                <td mat-cell *matCellDef="let registro"> {{registro.bnoc}} </td>
+                            </ng-container>
+
+                            <ng-container matColumnDef="he25">
+                              <th mat-header-cell *matHeaderCellDef> He25 </th>
+                              <td mat-cell *matCellDef="let registro"> {{registro.he25}} </td>
+                          </ng-container>
+
+
+                          <ng-container matColumnDef="he35">
+                              <th mat-header-cell *matHeaderCellDef> He35 </th>
+                              <td mat-cell *matCellDef="let registro"> {{registro.he35}} </td>
+                          </ng-container>
+
+                          <ng-container matColumnDef="hen25">
+                            <th mat-header-cell *matHeaderCellDef> Hen25 </th>
+                            <td mat-cell *matCellDef="let registro"> {{registro.hen25}} </td>
+                        </ng-container>
+
+                        <ng-container matColumnDef="hen35">
+                            <th mat-header-cell *matHeaderCellDef> Hen35 </th>
+                            <td mat-cell *matCellDef="let registro"> {{registro.hen35}} </td>
+                        </ng-container>
+
+                        <ng-container matColumnDef="h100">
+                          <th mat-header-cell *matHeaderCellDef> H100 </th>
+                          <td mat-cell *matCellDef="let registro"> {{registro.h100}} </td>
+                      </ng-container>
+
+                      <ng-container matColumnDef="hn100">
+                          <th mat-header-cell *matHeaderCellDef> Hn100 </th>
+                          <td mat-cell *matCellDef="let registro"> {{registro.hn100}} </td>
+                      </ng-container>
+
+
+                      <ng-container matColumnDef="falt">
+                        <th mat-header-cell *matHeaderCellDef> Falt </th>
+                        <td mat-cell *matCellDef="let registro"> {{registro.falt}} </td>
+                      </ng-container>
+
+                      <ng-container matColumnDef="vaca">
+                          <th mat-header-cell *matHeaderCellDef> Vaca </th>
+                          <td mat-cell *matCellDef="let registro"> {{registro.vaca}} </td>
+                      </ng-container>
+
+                      <ng-container matColumnDef="desm">
+                          <th mat-header-cell *matHeaderCellDef> Desm </th>
+                          <td mat-cell *matCellDef="let registro"> {{registro.desm}} </td>
+                      </ng-container>
+
+                      <ng-container matColumnDef="sube">
+                          <th mat-header-cell *matHeaderCellDef> Sube </th>
+                          <td mat-cell *matCellDef="let registro"> {{registro.sube}} </td>
+                      </ng-container>
+
+                      <ng-container matColumnDef="subm">
+                        <th mat-header-cell *matHeaderCellDef> Subm </th>
+                        <td mat-cell *matCellDef="let registro"> {{registro.subm}} </td>
+                      </ng-container>
+
+                      <ng-container matColumnDef="lics">
+                          <th mat-header-cell *matHeaderCellDef> Lics </th>
+                          <td mat-cell *matCellDef="let registro"> {{registro.lics}} </td>
+                      </ng-container>
+
+                      <ng-container matColumnDef="susp">
+                          <th mat-header-cell *matHeaderCellDef> Susp </th>
+                          <td mat-cell *matCellDef="let registro"> {{registro.susp}} </td>
+                      </ng-container>
+
+                      <ng-container matColumnDef="licp">
+                          <th mat-header-cell *matHeaderCellDef> Licp </th>
+                          <td mat-cell *matCellDef="let registro"> {{registro.licp}} </td>
+                      </ng-container>
+
+                      <ng-container matColumnDef="licf">
+                        <th mat-header-cell *matHeaderCellDef> Licf </th>
+                        <td mat-cell *matCellDef="let registro"> {{registro.licf}} </td>
+                    </ng-container>
+
+                    <ng-container matColumnDef="pgoc">
+                        <th mat-header-cell *matHeaderCellDef> Pgoc </th>
+                        <td mat-cell *matCellDef="let registro"> {{registro.pgoc}} </td>
+                    </ng-container>
+
+                    <ng-container matColumnDef="psgo">
+                        <th mat-header-cell *matHeaderCellDef> Psgo </th>
+                        <td mat-cell *matCellDef="let registro"> {{registro.psgo}} </td>
+                    </ng-container>
+                              <tr mat-header-row *matHeaderRowDef="registroscol"></tr>
+                              <tr mat-row *matRowDef="let row; columns: registroscol;"></tr>
+
+                          </mat-table>
+
+
+
+
+                      </div>
+                      <div style="display: flex; width: 30%; background-color: #fff; margin-top: 2%;" >
+
+                        <span  style="float: right;margin-left: 2%;" >Total de registros: {{nroTotalregistros}}</span>
+                      </div>
+
+                      <mat-paginator style="float: right;" #paginatorRegistros [pageSizeOptions]="[8]" showFirstLastButtons>
+                      </mat-paginator>
+
+
+                  </div>
+              </div>
+
+          </div>
+          <div class="modal-footer">
+            <button class="centre btn mc" (click)="downloadExcel()" class="btn btn-info" #closeBtn>Descargar excel</button>
+              <button type="button" class="btn btn-danger" data-dismiss="modal">Cerrar</button>
+          </div>
+          <!--</form>-->
+      </div>
+  </div>
+</div>

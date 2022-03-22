@@ -1,0 +1,26 @@
+.main-sidebar { background-color: #002034 !important }
+
+p {
+    font-family: "Trajan";
+}
+
+p.tabla {
+ font-size: 11px;
+}
+
+label{
+    font-family: "Trajan";
+}
+
+.div.letter {
+  font-size: 50px;
+}
+.content-wrapper {
+  background-image:url( ../../../assets/img/logo_fondo.png);
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-position-x: right;
+ }
+ .cdk-global-overlay-wrapper, .cdk-overlay-container {
+  z-index: 99999 !important;
+}

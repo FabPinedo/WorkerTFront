@@ -1,0 +1,9 @@
+.main-sidebar {
+  background-color: #002034 !important
+}
+.content-wrapper {
+  background-image:url( ../../../assets/img/logo_fondo.png) ;
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-position-x: right;
+}

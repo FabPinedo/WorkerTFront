@@ -1,0 +1,526 @@
+<div class="row">
+
+  <div class="col-12">
+      <div class="card divmargen">
+          <div class="card-header">
+            <div class="container-fluid">
+                    <div class="row" >
+                      <form [formGroup]="formFiltros"  class="form-horizontal" style="width: 100% !important;">
+                        <div class="form-group row" style="font-size: 12px;">
+                          <label for="inputEmpresaNombreComercial"
+                              class="col-form-label col-sm-1 form-control-sm">Empresa</label>
+                              <div class="col-sm-3">
+                                <mat-form-field appearance="fill">
+                                  <mat-select  (selectionChange)="getTrabajadores();getperiodos();onListAnios();"  formControlName="empresa"
+                                  [ngClass]="{'is-invalid': submitted && formFiltros.hasError('required', 'empresa') }" >
+                                  <mat-option>Seleccione una opcion</mat-option>
+                                    <mat-option *ngFor = "let empresa of empresas" [value]="empresa.codempresa">
+                                      {{empresa.desrazonsocial}}
+                                    </mat-option>
+                                  </mat-select>
+                                </mat-form-field>
+                                <div *ngIf="submitted && formFiltros.hasError('errors', 'empresa')" class="invalid-feedback" >
+                                  <div *ngIf="formFiltros.hasError('required', 'empresa')">
+                                    Este campo es obligatorio
+                                  </div>
+                                </div>
+                                </div>
+
+
+
+                                <label for="inputEmpresaNombreComercial"
+                              class="col-form-label col-sm-1 form-control-sm">Sedes</label>
+                              <div class="col-sm-3">
+                                <mat-form-field appearance="fill">
+                                  <mat-select  (selectionChange)="getTrabajadores()"  formControlName="sede"
+                                  [ngClass]="{'is-invalid': submitted && formFiltros.hasError('required', 'sede') }" >
+                                  <mat-option>Seleccione una opcion</mat-option>
+                                    <mat-option *ngFor = "let sede of sedes" [value]="sede.descorta">
+                                      {{sede.deslarga}}
+                                    </mat-option>
+                                  </mat-select>
+                                </mat-form-field>
+                                <div *ngIf="submitted && formFiltros.hasError('errors', 'sede')" class="invalid-feedback" >
+                                <div *ngIf="formFiltros.hasError('required', 'sede')">
+                                  Este campo es obligatorio
+                                </div>
+                              </div>
+                                </div>
+                                <label for="inputEmpresaNombreComercial"
+                          class="col-form-label col-sm-1 form-control-sm">Zonas</label>
+                          <div class="col-sm-3" >
+                            <mat-form-field appearance="fill">
+                              <mat-select (selectionChange)="getTrabajadores()" formControlName="zona"
+                              [ngClass]="{'is-invalid': submitted && formFiltros.hasError('required', 'zona') }" >
+                              <mat-option>Seleccione una opcion</mat-option>
+                                <mat-option  *ngFor = "let zona of zonas" [value]="zona.descorta">
+                                  {{zona.deslarga}}
+                                </mat-option>
+                              </mat-select>
+                            </mat-form-field>
+                            <div *ngIf="submitted && formFiltros.hasError('errors', 'zona')" class="invalid-feedback" >
+                              <div *ngIf="formFiltros.hasError('requied', 'zona')">
+                                Este campo es obligatorio
+                              </div>
+                            </div>
+                            </div>
+                        </div>
+
+
+                              <div class="form-group row" style="font-size: 12px;">
+                                <label for="inputEmpresaNombreComercial"
+                                    class="col-form-label col-sm-1 form-control-sm">Año</label>
+                                    <div class="col-sm-3" >
+                                      <mat-form-field appearance="fill">
+                                        <mat-select (selectionChange)="getperiodos()" formControlName="anio"
+                                        [ngClass]="{'is-invalid': submitted && formFiltros.hasError('required', 'anio') }" >
+                                        <mat-option>Seleccione una opcion</mat-option>
+                                          <mat-option  *ngFor = "let anio of anios" [value]="anio.anio">
+                                            {{anio.anio}}
+                                          </mat-option>
+                                        </mat-select>
+                                      </mat-form-field>
+                                      <div *ngIf="submitted &&formFiltros.hasError('error', 'anio')" class="invalid-feedback" >
+                                    <div *ngIf="formFiltros.hasError('required', 'anio')">
+                                      Este campo es obligatorio
+                                    </div>
+                                  </div>
+                                      </div>
+                                <label for="inputEmpresaNombreComercial"
+                                      class="col-form-label col-sm-1 form-control-sm">Periodos</label>
+                                      <div class="col-sm-3" >
+                                        <mat-form-field appearance="fill">
+                                          <mat-select  formControlName="periodo"
+                                          [ngClass]="{'is-invalid': submitted && formFiltros.hasError('required', 'periodo') }" >
+                                          <mat-option>Seleccione una opcion</mat-option>
+                                            <mat-option  *ngFor = "let periodo of periodos" [value]="periodo.mesproceso">
+                                              Del {{periodo.fecini|date:'dd/MM/yyyy'}} al {{periodo.fecfin|date:'dd/MM/yyyy'}}
+                                            </mat-option>
+                                          </mat-select>
+                                        </mat-form-field>
+                                        <div *ngIf="submitted && formFiltros.hasError('errors', 'periodo')" class="invalid-feedback" >
+                                          <div *ngIf="formFiltros.hasError('required', 'periodo')">
+                                            Este campo es obligatorio
+                                          </div>
+                                        </div>
+                                      </div>
+                                      <label for="inputEmpresaNombreComercial"
+                                      class="col-form-label col-sm-1 form-control-sm">Lotes</label>
+                                      <div class="col-sm-3" >
+                                        <mat-form-field appearance="fill">
+                                          <mat-select  formControlName="lote"
+                                          [ngClass]="{'is-invalid': submitted && formFiltros.hasError('required', 'lote') }" >
+                                          <mat-option>Seleccione una opcion</mat-option>
+                                            <mat-option  *ngFor = "let lote of lotes" [value]="lote.lote">
+                                              {{lote.lote}}
+                                            </mat-option>
+                                          </mat-select>
+                                        </mat-form-field>
+                                        <div *ngIf="submitted && formFiltros.hasError('errors', 'lote')" class="invalid-feedback" >
+                                          <div *ngIf="formFiltros.hasError('required', 'lote')">
+                                            Este campo es obligatorio
+                                          </div>
+                                        </div>
+                                      </div>
+                                </div>
+
+
+                          <div class="form-group row" style="font-size: 12px;">
+                            <label for="inputEmpresaNombreComercial"
+                            class="col-form-label col-sm-1 form-control-sm">Trabajador</label>
+                        <div class="col-sm-3" >
+                              <mat-form-field appearance="fill">
+                                <mat-select  (selectionChange)="limpiardata()" formControlName="trabajador"
+                                [ngClass]="{'is-invalid': submitted && formFiltros.hasError('required', 'trabajador')}" >
+                                  <mat-option>Seleccione una opcion</mat-option>
+                                    <mat-option *ngFor = "let trabajador of trabajadores" [value]="trabajador.codpersonal">
+                                    {{trabajador.apepaterno+" "+trabajador.apematerno+" "+trabajador.nombre}}
+                                    </mat-option>
+                              </mat-select>
+                              </mat-form-field>
+                              <div *ngIf="submitted && formFiltros.hasError('errors', 'trabajador')" class="invalid-feedback" >
+                                <div *ngIf="formFiltros.hasError('required', 'trabajador')">
+                                  Este campo es obligatorio
+                                </div>
+                              </div>
+                              </div>
+
+
+                            <label for="inputEmpresaNombreComercial"
+                                class="col-form-label col-sm-1 form-control-sm">Permisos</label>
+                            <div class="col-sm-3">
+
+                              <mat-form-field appearance="fill">
+                                <mat-select  [disabled]="bloqueo" (selectionChange)="selectpermiso()" formControlName="permisos"
+
+                              [ngClass]="{'is-invalid': submitted && formFiltros.hasError('required', 'permisos') }" >
+                              <mat-option>Seleccione una opcion</mat-option>
+                                  <mat-option *ngFor = "let permiso of permisos" [value]="permiso.conperid">
+                                    {{permiso.conperdes}}
+                                  </mat-option>
+
+                                </mat-select>
+
+                              </mat-form-field>
+                              <div *ngIf="submitted && formFiltros.hasError('errors', 'permisos')" class="invalid-feedback" >
+                                  <div *ngIf="formFiltros.hasError('required', 'permisos')">
+                                    Este campo es obligatorio
+                                  </div>
+                                </div>
+                              </div>
+                              <div class="col-sm-2">
+                                <button  type="submit" class="btn btn-info active form-control-sm" [disabled]="bloqueo" (click)="guardarPermiso()">Agregar Permiso</button>
+                              </div>
+                              <div class="col-sm-2">
+                                <button  type="submit" class="btn btn-info active form-control-sm" [disabled]="bloqueo" (click)="eliminarPermiso()">Eliminar Permiso</button>
+                              </div>
+                            </div>
+                            <div class="form-group row justify-content-center" style="font-size: 12px;">
+                              <div class="col-sm-2">
+                                <button  type="submit" class="btn btn-info active form-control-sm" (click)="buscarregistros()">Buscar registros</button>
+                              </div>
+                              <div class="col-sm-2">
+                                <button [disabled]="isDisable" type="submit" class="btn btn-info active form-control-sm" (click)="GuardarRegistros()">Procesar Registros</button>
+                              </div>
+
+                            </div>
+
+
+
+
+                      </form>
+                </div>
+
+
+            </div>
+
+
+          </div>
+          <!-- /.card-header -->
+          <div class="card-body">
+
+            <form [formGroup]="formRegistros" autocomplete="off">
+              <ng-container formArrayName="registros">
+                <mat-table  class=" table-responsive" [dataSource]="registrosdata">
+
+                  <!--- Note that these columns can be defined in any order.
+                        The actual rendered columns are set as a property on the row definition" -->
+
+                  <!-- Id Column -->
+
+                  <ng-container matColumnDef="Sel">
+                    <mat-header-cell *matHeaderCellDef>
+                      <mat-checkbox [disabled]="isDisable" (change)="$event ? masterToggle() : null"
+                                    [checked]="selection.hasValue() && isAllSelected()"
+                                    [indeterminate]="selection.hasValue() && !isAllSelected()"
+                                    [aria-label]="checkboxLabel()">
+                      </mat-checkbox>
+
+                    </mat-header-cell>
+                    <mat-cell *matCellDef="let row">
+                      <mat-checkbox (click)="$event.stopPropagation();"
+                                    (change)="$event ? selection.toggle(row) : null;onChange($event)"
+                                    [checked]="selection.isSelected(row)"
+                                    [disabled]="row.value.cerrado || isDisable"
+                                    [aria-label]="checkboxLabel(row)">
+                      </mat-checkbox>
+                    </mat-cell>
+                  </ng-container>
+
+                  <!-- User Column -->
+                  <ng-container matColumnDef="Fecha">
+                    <mat-header-cell *matHeaderCellDef> Fecha </mat-header-cell>
+                    <mat-cell *matCellDef="let element;" [formGroup]="element">
+                      <p style="text-align: center;"  class="tabla">{{element.get('fechamar').value|date:'dd/MM/yyyy'}}</p>
+                    </mat-cell>
+                  </ng-container>
+
+
+                  <ng-container matColumnDef="Dia">
+                    <mat-header-cell *matHeaderCellDef> Día </mat-header-cell>
+                    <mat-cell *matCellDef="let element" [formGroup]="element">
+                      <p style="text-align: center;" class="tabla">{{element.get('diaNombre').value}}</p>
+                    </mat-cell>
+                  </ng-container>
+
+                  <ng-container matColumnDef="Turno">
+                    <mat-header-cell *matHeaderCellDef> Turno </mat-header-cell>
+                    <mat-cell *matCellDef="let element" [formGroup]="element">
+                      <mat-form-field floatLabel="never" >
+                        <mat-select formControlName="horcla" [disabled]="!element.value.isAddDaysEnabled" required>
+                          <mat-option  value="ES">
+                            Día
+                          </mat-option>
+                          <mat-option  value="AM">
+                            Noche
+                          </mat-option>
+                          <mat-option  value="DE">
+                            Descanso
+                          </mat-option>
+                        </mat-select>
+                      </mat-form-field>
+                    </mat-cell>
+                  </ng-container>
+
+
+                <!-- Title Column -->
+                  <ng-container matColumnDef="FecIni">
+                    <mat-header-cell *matHeaderCellDef> Fec.Ini </mat-header-cell>
+                    <mat-cell *matCellDef="let element;" [formGroup]="element">
+                      <mat-form-field floatLabel="never" >
+                        <input type="date" matInput  [min]="element.get('dianterior').value" [max]="element.get('diadespues').value"
+                        [readonly]="!element.value.isAddDaysEnabled" placeholder="dd-MM-yyyy" formControlName="fechaentrada" required>
+                      </mat-form-field>
+                    </mat-cell>
+                  </ng-container>
+                  <ng-container matColumnDef="HorIni">
+                    <mat-header-cell *matHeaderCellDef> Hor.Ini </mat-header-cell>
+                    <mat-cell *matCellDef="let element;" [formGroup]="element">
+                      <mat-form-field floatLabel="never" >
+                        <input type="time" matInput [readonly]="!element.value.isAddDaysEnabled" placeholder="0"  formControlName="horaentrada" required>
+                      </mat-form-field>
+                    </mat-cell>
+                  </ng-container>
+                  <ng-container matColumnDef="FecFin">
+                    <mat-header-cell *matHeaderCellDef> Fec.Fin </mat-header-cell>
+                    <mat-cell *matCellDef="let element;" [formGroup]="element">
+                      <mat-form-field floatLabel="never" >
+                        <input type="date" matInput [readonly]="!element.value.isAddDaysEnabled" placeholder="0" [min]="element.get('dianterior').value" [max]="element.get('diadespues').value"
+                         formControlName="fechasalida" required>
+                      </mat-form-field>
+                    </mat-cell>
+                  </ng-container>
+                  <ng-container matColumnDef="HorFin">
+                    <mat-header-cell *matHeaderCellDef> Hor.Fin </mat-header-cell>
+                    <mat-cell *matCellDef="let element;" [formGroup]="element">
+                      <mat-form-field floatLabel="never" >
+                        <input type="time" matInput [readonly]="!element.value.isAddDaysEnabled" placeholder="0" formControlName="horasalida" required>
+                      </mat-form-field>
+                    </mat-cell>
+                  </ng-container>
+
+                  <ng-container matColumnDef="Tiemref">
+                    <mat-header-cell *matHeaderCellDef> Tiem.ref </mat-header-cell>
+                    <mat-cell *matCellDef="let element" [formGroup]="element">
+                      <div style="width: 60%;">
+                        <p class="tabla">{{element.get('tiemref').value}}</p>
+                      </div>
+                      <div style="width: 40%;">
+                        <button [disabled]="isDisable|| !element.value.isAddDaysEnabled" mat-icon-button (click)="getTareoRefri(element)" title="Editar refrigerios"
+                       data-toggle="modal" data-target="#viewModaltiemref">
+                       ...
+                      </button>
+                      </div>
+
+                    </mat-cell>
+                  </ng-container>
+
+                  <ng-container matColumnDef="Hefe">
+                    <mat-header-cell *matHeaderCellDef> H.efe </mat-header-cell>
+                    <mat-cell *matCellDef="let element" [formGroup]="element">
+                      <p class="tabla">{{element.get('hefe').value}}</p>
+                    </mat-cell>
+                  </ng-container>
+                  <ng-container matColumnDef="He25">
+                    <mat-header-cell *matHeaderCellDef> He25 </mat-header-cell>
+                    <mat-cell *matCellDef="let element" [formGroup]="element">
+                      <p class="tabla">{{element.get('he25').value}}</p>
+                    </mat-cell>
+                  </ng-container>
+
+                  <ng-container matColumnDef="He35">
+                    <mat-header-cell *matHeaderCellDef> He35 </mat-header-cell>
+                    <mat-cell *matCellDef="let element" [formGroup]="element">
+                      <p class="tabla">{{element.get('he35').value}}</p>
+                    </mat-cell>
+                  </ng-container>
+
+                  <ng-container matColumnDef="H100">
+                    <mat-header-cell *matHeaderCellDef> H100 </mat-header-cell>
+                    <mat-cell *matCellDef="let element" [formGroup]="element">
+                      <p class="tabla">{{element.get('h100').value}}</p>
+                    </mat-cell>
+                  </ng-container>
+                  <ng-container matColumnDef="Hen25">
+                    <mat-header-cell *matHeaderCellDef> Hen25 </mat-header-cell>
+                    <mat-cell *matCellDef="let element" [formGroup]="element">
+                      <p class="tabla">{{element.get('hen25').value}}</p>
+                    </mat-cell>
+                  </ng-container>
+
+                  <ng-container matColumnDef="Hen35">
+                    <mat-header-cell *matHeaderCellDef> Hen35 </mat-header-cell>
+                    <mat-cell *matCellDef="let element" [formGroup]="element">
+                      <p class="tabla">{{element.get('hen35').value}}</p>
+                    </mat-cell>
+                  </ng-container>
+
+                  <ng-container matColumnDef="Hn100">
+                    <mat-header-cell *matHeaderCellDef> Hn100 </mat-header-cell>
+                    <mat-cell *matCellDef="let element" [formGroup]="element">
+                      <p class="tabla">{{element.get('hn100').value}}</p>
+                    </mat-cell>
+                  </ng-container>
+
+                  <ng-container matColumnDef="Bnoc">
+                    <mat-header-cell *matHeaderCellDef> B.noc </mat-header-cell>
+                    <mat-cell *matCellDef="let element" [formGroup]="element">
+                      <p class="tabla">{{element.get('bnoc').value}}</p>
+                    </mat-cell>
+                  </ng-container>
+
+                  <ng-container matColumnDef="Lote">
+                    <mat-header-cell *matHeaderCellDef> Lote </mat-header-cell>
+                    <mat-cell *matCellDef="let element" [formGroup]="element">
+                      <mat-form-field appearance="fill">
+                        <mat-select [disabled]="!element.value.isAddDaysEnabled"  formControlName="lote" >
+                          <mat-option>Seleccione una opcion</mat-option>
+                            <mat-option *ngFor = "let lote of lotes" [value]="lote.lote">
+                            {{lote.lote}}
+                            </mat-option>
+                      </mat-select>
+                      </mat-form-field>
+                    </mat-cell>
+                  </ng-container>
+
+
+                  <ng-container matColumnDef="Concepto">
+                    <mat-header-cell *matHeaderCellDef> Concepto </mat-header-cell>
+                    <mat-cell *matCellDef="let element" [formGroup]="element">
+                      <p class="tabla">{{element.get('conperdes').value}}</p>
+                    </mat-cell>
+                  </ng-container>
+
+
+
+                  <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+                  <!--(click)="!row.value.cerrado && selection.toggle(row);" esto va en e mat-row-->
+                  <mat-row *matRowDef="let row; columns: displayedColumns;"
+                  [ngStyle]="row.value.cerrado && {'background-color': 'lightgrey'}" ></mat-row>
+                </mat-table>
+                <div style="display: flex; background-color: #fff; margin-top: 2%;" >
+                  <span  style="float: right;margin-left: 2%;" >Total de registros: {{nroTotal}}</span>
+                </div>
+                <mat-paginator [pageSizeOptions]="[7, 14]" showFirstLastButtons></mat-paginator>
+
+              </ng-container>
+            </form>
+
+          </div>
+          <!-- /.card-body -->
+      </div>
+
+  </div>
+  <!-- /.col -->
+</div>
+<!-- /.row -->
+<div class="modal fade" id="viewModaltiemref" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle"
+aria-hidden="true" >
+    <div class="modal-dialog  modal-lg modal-dialog-centered" role="document">
+        <div class="modal-content">
+          <form [formGroup]="formRefri" autocomplete="off">
+
+          <div class="modal-header">
+            <h5 class="modal-title">Refrigerios</h5>
+            <button type="button" #closebutton class="close" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="modal-body">
+            <div class="container-fluid">
+
+              <div class="demo-button-container">
+              <button mat-raised-button (click)="addData()" class="demo-button">
+                Agregar Refrigerio
+              </button>
+              <button
+                  mat-raised-button
+                  [disabled]="!refrigeriosdata.data.length"
+                  (click)="removeData()"
+                  class="demo-button">
+                Eliminar refrigerio
+              </button>
+            </div>
+
+
+              <ng-container formArrayName="refrigerios">
+                <table mat-table [dataSource]="refrigeriosdata" class="mat-elevation-z8 demo-table">
+              <!-- Position Column -->
+                  <ng-container matColumnDef="sel">
+                    <th mat-header-cell *matHeaderCellDef>
+                      <mat-checkbox (change)="$event ? masterToggle2() : null"
+                                    [checked]="selectionrefri.hasValue() && isAllSelected2()"
+                                    [indeterminate]="selectionrefri.hasValue() && !isAllSelected2()"
+                                    [aria-label]="checkboxLabel2()">
+                      </mat-checkbox>
+
+                    </th>
+                    <td mat-cell *matCellDef="let row">
+                      <mat-checkbox (click)="$event.stopPropagation();"
+                                    (change)="$event ? selectionrefri.toggle(row) : null"
+                                    [checked]="selectionrefri.isSelected(row)"
+                                    [aria-label]="checkboxLabel2(row)">
+                      </mat-checkbox>
+                    </td>
+                  </ng-container>
+
+                  <!-- Name Column -->
+                  <ng-container matColumnDef="fecini">
+                    <th mat-header-cell *matHeaderCellDef> fecha inicio </th>
+                    <td mat-cell *matCellDef="let element;" [formGroup]="element">
+                      <mat-form-field floatLabel="never" >
+                        <input type="date" matInput  placeholder="0" [min]="element.get('dianterior').value" [max]="element.get('diadespues').value"
+                        formControlName="fechaentrada" required>
+                      </mat-form-field>
+                    </td>
+                  </ng-container>
+                  <ng-container matColumnDef="horini">
+                    <th mat-header-cell *matHeaderCellDef> Hora inicio </th>
+                    <td mat-cell *matCellDef="let element;" [formGroup]="element">
+                      <mat-form-field floatLabel="never" >
+                        <input type="time" matInput  placeholder="0" formControlName="horaentrada" required>
+                      </mat-form-field>
+                    </td>
+                  </ng-container>
+
+                  <!-- Weight Column -->
+                  <ng-container matColumnDef="fecfin">
+                    <th mat-header-cell *matHeaderCellDef> fecha fin </th>
+                    <td mat-cell *matCellDef="let element;" [formGroup]="element">
+                      <mat-form-field floatLabel="never" >
+                        <input type="date" matInput  placeholder="0"  [min]="element.get('dianterior').value" [max]="element.get('diadespues').value"
+                        formControlName="fechasalida" required>
+                      </mat-form-field>
+                    </td>
+                  </ng-container>
+                  <ng-container matColumnDef="horfin">
+                    <th mat-header-cell *matHeaderCellDef> Hora fin </th>
+                    <td mat-cell *matCellDef="let element;" [formGroup]="element">
+                      <mat-form-field floatLabel="never" >
+                        <input type="time" matInput  placeholder="0" formControlName="horasalida" required>
+                      </mat-form-field>
+                    </td>
+                  </ng-container>
+
+
+
+
+              <tr mat-header-row *matHeaderRowDef="refrigerioscol"></tr>
+              <tr mat-row *matRowDef="let row; columns: refrigerioscol;"></tr>
+            </table>
+              </ng-container>
+
+
+          </div>
+
+
+
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-dismiss="modal">cerrar</button>
+            <button type="button" class="btn btn-primary"(click)="onSubmitregrigerios()" #closeBtn>guardar</button>
+          </div>
+        </form>
+        </div>
+    </div>
+</div>
